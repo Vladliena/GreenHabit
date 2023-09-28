@@ -1,5 +1,13 @@
 # GreenHabit App IN PROCESS
 
+## Tools
+
+- React
+- Node.js
+- pgAdmin4, ElephantSQL
+- Cloudinary
+- OneSignal
+
 GreenHabit is a waste tracking and management application designed to help users reduce their environmental impact by monitoring and managing their waste production. On average, a family of four generates approximately 6,400 pounds (2,900 kilograms) of trash per year, contributing to ocean and air pollution and global warming. Recycling, composting, and responsible waste management are essential practices to mitigate these issues.
 
 ## Features
