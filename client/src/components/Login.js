@@ -54,7 +54,7 @@ export const SignIn = (props) => {
                 setMessage("");
                 console.log(res.data);
                 setToken(res.data);
-                navigate("/");
+                navigate("/profile");
             }
         } catch (err) {
             setMessage(err.response.data.msg);
@@ -107,10 +107,10 @@ export const SignIn = (props) => {
                             autoComplete="current-password"
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                        <FormControlLabel
+                        {/* <FormControlLabel
                             control={<Checkbox value="remember" color="primary" />}
                             label="Remember me"
-                        />
+                        /> */}
                         <Button
                             type="submit"
                             fullWidth
@@ -121,9 +121,9 @@ export const SignIn = (props) => {
                         </Button>
                         <Grid container>
                             <Grid item xs>
-                                <Link href="#" variant="body2">
+                                {/* <Link href="#" variant="body2">
                                     Forgot password?
-                                </Link>
+                                </Link> */}
                             </Grid>
                             <Grid item>
                                 <Link href="/register" variant="body2">
