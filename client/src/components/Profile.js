@@ -98,7 +98,6 @@ const Portfolio = ({ children }) => {
 
     return (
         <>
-            {console.log("data", userInfo)}
             <div className="card-container">
                 {/* <h3>Set your avatar</h3>
             <form onSubmit={handleSubmitFile}>

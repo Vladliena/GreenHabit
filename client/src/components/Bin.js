@@ -50,7 +50,6 @@ const Bin = () => {
         try {
             const res = await fetch(`/api/waste`);
             const data = await res.json();
-            console.log(data)
 
             setGarbage(data);
         } catch (e) {
@@ -59,7 +58,6 @@ const Bin = () => {
     };
 
     const handleSubmit = (waste_type, weightSelect) => {
-        console.log(waste_type, weightSelect)
         switch (waste_type) {
             case 'Plastic':
                 setPlasticBin((prevState) => ({ ...prevState, weight: prevState.weight + weightSelect }))
@@ -89,7 +87,6 @@ const Bin = () => {
 
     return (
         <div>
-            {console.log(userInfo.user_id)}
             <IconButton aria-label="cart">
                 <StyledBadge badgeContent={"Plastic Bin" + plasticBin.weight} color="secondary">
                     <DeleteSharpIcon sx={{ width: 130, height: 130 }} />

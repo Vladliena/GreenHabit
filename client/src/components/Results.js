@@ -23,21 +23,11 @@ import {
 const Results = (props) => {
     const { token, userInfo } = useContext(AppContext)
     const [LastResults, setLastResults] = useState()
-    const [friendUser, setFriendUser] = useState('')
 
     useEffect(() => {
         fetchWasteData()
     }, [])
 
-    const getFriendData = async () => {
-        try {
-            const res = await axios.get(`/api/usergarbage/search/${friendUser}`)
-            console.log(res.data)
-            setFriendUser(res.data)
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     const fetchWasteData = async () => {
         const todayDate = new Date().toJSON().slice(0, 10)
@@ -46,7 +36,6 @@ const Results = (props) => {
         let yesterdayDate = currentDate.toJSON().slice(0, 10)
         try {
             const res = await axios.get(`/api/usergarbage/${userInfo.user_id}`)
-            console.log(res.data)
             const flattenedData = res.data.reduce((result, item) => {
                 const existingType = result.find((el) => el.type === item.type);
                 if (existingType) {
@@ -72,21 +61,17 @@ const Results = (props) => {
                 totalAll: (item.totalAll / 1000).toFixed(2)
             }))
             setLastResults(udpatedData)
-
+            console.log('finished')
         } catch (err) {
-            console.log(err)
+            console.log('error =>', err)
         }
     }
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <input type="text" placeholder="other user name" onChange={(e) => setFriendUser(e.target.value)} />
-            <button type="button" onClick={() => getFriendData()}>Search</button>
-            {friendUser && console.log(friendUser)}
             <div style={{ display: 'flex' }}>
                 <div style={{ display: 'flex', flexDirection: 'column' }}>
                     <h1 style={{ margin: 'auto' }}>Your Last Results</h1>
-                    {LastResults && console.log(LastResults)}
                     <AreaChart
                         width={500}
                         height={275}
