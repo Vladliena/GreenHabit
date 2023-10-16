@@ -59,6 +59,11 @@ export const SignIn = (props) => {
         } catch (err) {
             setMessage(err.response.data.msg);
         }
+        // const data = new FormData(event.currentTarget);
+        // console.log({
+        //     email: data.get('email'),
+        //     password: data.get('password'),
+        // });
     };
 
     return (
@@ -134,3 +139,20 @@ export const SignIn = (props) => {
         </ThemeProvider>
     );
 }
+
+
+// const LoginRegister = (params) => {
+//     const { setToken } = useContext(AppContext);
+
+//     const navigate = useNavigate()
+
+
+//     return (
+//         <>
+
+//         </>
+//     )
+// }
+
+
+// export default LoginRegister

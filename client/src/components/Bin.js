@@ -3,43 +3,37 @@ import axios from "axios";
 import DeleteSharpIcon from '@mui/icons-material/DeleteSharp';
 import Badge from '@mui/material/Badge';
 import { styled } from '@mui/material/styles';
-import IconButton from '@mui/material/IconButton';
 import ImageList from '@mui/material/ImageList';
-import ImageListItem from '@mui/material/ImageListItem';
-import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { AppContext } from "../App";
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import Alert from '@mui/material/Alert';
+import AlertTitle from '@mui/material/AlertTitle';
+import Stack from '@mui/material/Stack';
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
     '& .MuiBadge-badge': {
         right: 65,
         top: 65,
-        border: `2px solid ${theme.palette.background.paper}`,
         padding: '15px',
     },
 }));
 
 const Bin = () => {
     const [garbage, setGarbage] = useState([])
-    const [selectOption, setSelectedOption] = useState(null)
-    const { token, userInfo, setUserInfo } = useContext(AppContext);
-    const [plasticBin, setPlasticBin] = useState({
-        user_id: userInfo.user_id,
-        garbage_id: 1,
-        weight: 0,
-        type: "plastic"
-    })
-    const [glassBin, setGlassBin] = useState({
-        user_id: userInfo.user_id,
-        garbage_id: 2,
-        weight: 0,
-        type: "glass"
-    })
-    const [fabricsBin, setFabricsBin] = useState({
-        user_id: userInfo.user_id,
-        garbage_id: 3,
-        weight: 0,
-        type: "fabric"
-    })
+    const [selectOption, setSelectedOption] = useState()
+    const { userInfo } = useContext(AppContext);
+    const [garbageBins, setGarbageBins] = useState([])
+    const [dataSent, setDataSent] = useState(false)
 
 
     useEffect(() => {
@@ -57,79 +51,99 @@ const Bin = () => {
         }
     };
 
-    const handleSubmit = (waste_type, weightSelect) => {
-        switch (waste_type) {
-            case 'Plastic':
-                setPlasticBin((prevState) => ({ ...prevState, weight: prevState.weight + weightSelect }))
-                break;
-            case 'Glass':
-                setGlassBin((prevState) => ({ ...prevState, weight: prevState.weight + weightSelect }))
-                break;
-            case 'Fabrics':
-                setFabricsBin((prevState) => ({ ...prevState, weight: prevState.weight + weightSelect }))
-                break;
-            default:
-                console.log(`Sorry, something didn't work`);
+    const handleSubmit = (waste_type, garbage_id) => {
+        const typeWeight = parseFloat(selectOption)
+        const newWaste = {
+            user_id: userInfo.user_id,
+            garbage_id: garbage_id,
+            weight: typeWeight,
+            type: waste_type
+        }
+        const existingWaste = garbageBins.findIndex((bin) => bin.garbage_id === garbage_id);
+        if (existingWaste !== -1) {
+            setGarbageBins((prevState) => {
+                prevState[existingWaste].weight += typeWeight;
+                return [...prevState];
+            });
+        } else {
+            setGarbageBins((prevState) => [...prevState, newWaste])
         }
     }
 
     const sendGarbageUserData = async () => {
-        try{
-            const data = await axios.post('/api/usergarbage/dump', [
-                plasticBin,
-                glassBin,
-                fabricsBin
-            ])
-        } catch(err){
+        try {
+            await axios.post('/api/usergarbage/dump', garbageBins)
+        } catch (err) {
             console.log(err)
         }
     }
 
+    const getTotalWeightByType = (typename) => {
+        return garbageBins
+            .filter((bin) => bin.type === typename)
+            .reduce((total, bin) => total + bin.weight, 0);
+    }
+
     return (
         <div>
-            <IconButton aria-label="cart">
-                <StyledBadge badgeContent={"Plastic Bin" + plasticBin.weight} color="secondary">
-                    <DeleteSharpIcon sx={{ width: 130, height: 130 }} />
-                </StyledBadge>
-            </IconButton>
-            <IconButton aria-label="cart">
-                <StyledBadge badgeContent={'Glass Bin' + glassBin.weight} color="secondary">
-                    <DeleteSharpIcon sx={{ width: 130, height: 130 }} />
-                </StyledBadge>
-            </IconButton>
-            <IconButton aria-label="cart">
-                <StyledBadge badgeContent={`Fabric Bin ${fabricsBin.weight}`} color="secondary">
-                    <DeleteSharpIcon sx={{ width: 130, height: 130 }} />
-                </StyledBadge>
-            </IconButton>
-            <button onClick={sendGarbageUserData}>Recycle</button>
+            <StyledBadge badgeContent={`Plastic Bin ${getTotalWeightByType('Plastic')}`}>
+                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+            </StyledBadge>
+            <StyledBadge badgeContent={`Glass Bin ${getTotalWeightByType('Glass')}`}>
+                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+            </StyledBadge>
+            <StyledBadge badgeContent={`Paper Bin ${getTotalWeightByType('Paper')}`}>
+                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+            </StyledBadge>
+            <StyledBadge badgeContent={`Non-recycle Bin ${getTotalWeightByType('Other')}`}>
+                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+            </StyledBadge>
+            <Button onClick={sendGarbageUserData}>Recycle</Button>
 
-            <ImageList cols={5}>
+            <ImageList cols={4}>
                 {garbage && garbage.map((item, index) => (
-                    <div key={index}>
-                        <ImageListItem>
-                            <img
-                                srcSet={`${item.image_url}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                                src={`${item.image_url}?w=248&fit=crop&auto=format`}
-                                alt="image"
-                                loading="lazy"
-                            />
-                            <ImageListItemBar
-                                title={item.type}
-                                subtitle={<span>
-                                    {/* <p>Can be recycled in bin: {item.recycled ? "Yes" : "No (find a specific recycle point for this type of waste)"}</p> */}
-                                    <select onChange={(e) => setSelectedOption(e.target.value)}>
-                                        <option value="" disabled selected>Select weight</option>
-                                        <option value={item.s_size}>{item.s_size} {item.base_unit}</option>
-                                        <option value={item.m_size}>{item.m_size} {item.base_unit}</option>
-                                        <option value={item.l_size}>{item.l_size} {item.base_unit}</option>
-                                    </select>
-                                    <button type="button" onClick={() => handleSubmit(item.type, +selectOption)}>Add to bin</button>
-                                </span>}
-                                position="below"
-                            />
-                        </ImageListItem>
-                    </div>
+                    <Card sx={{ maxWidth: 345 }}>
+                        <CardMedia
+                            sx={{ height: 140 }}
+                            image={item.image_url}
+                            title="garbage"
+                            key={index}
+                        />
+                        <CardContent>
+                            <Typography gutterBottom variant="h6" component="div">
+                                {item.title}
+                            </Typography>
+                            <Typography variant="body2" color="text.secondary">
+                                {item.recycled ? <Alert severity="success">
+                                    <AlertTitle>Recycled</AlertTitle>
+                                    This type of waste can be recycle from bin — <strong>Just Put It To The Right Bin!</strong>
+                                </Alert> : <Alert severity="warning">
+                                    <AlertTitle>Non-Recycled</AlertTitle>
+                                    This type of waste can't be recycled from bin — <strong>Find a Special Waste Drop-Off Site!</strong>
+                                </Alert>}
+                            </Typography>
+                        </CardContent>
+                        <CardActions>
+                            <Box sx={{ minWidth: 160 }}>
+                                <FormControl fullWidth>
+                                    <InputLabel id="demo-simple-select-label">Select weight</InputLabel>
+                                    <Select
+                                        labelId="demo-simple-select-label"
+                                        id="demo-simple-select"
+                                        value={selectOption}
+                                        label="Weight"
+                                        onChange={(e) => setSelectedOption(e.target.value)}
+                                    >
+                                        <MenuItem value={item.s_size}>{item.s_size} {item.base_unit}</MenuItem>
+                                        <MenuItem value={item.m_size}>{item.m_size} {item.base_unit}</MenuItem>
+                                        <MenuItem value={item.l_size}>{item.l_size} {item.base_unit}</MenuItem>
+                                    </Select>
+                                    <Button type="button" onClick={() => handleSubmit(item.type, item.garbage_id)}>Add to bin</Button>
+                                </FormControl>
+                            </Box>
+                        </CardActions>
+                    </Card>
+
                 ))}
             </ImageList>
         </div>

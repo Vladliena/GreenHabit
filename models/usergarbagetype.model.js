@@ -11,16 +11,17 @@ const _getUsersGarbageTypes = () => {
         )
         .join("users as u", "ugt.user_id", "u.user_id")
         .groupBy("ugt.user_id", "u.avatar", "u.username")
-        .orderBy("total", "asc");
+        .orderBy("total", "asc")
+        .limit(5);
 };
 
 const _getFriendData = (name) => {
     return db("users as u")
-    .select("u.username", "u.avatar")
-    .sum("ugt.garbage_type_waste_total as total")
-    .join("users_garbage_types as ugt", "u.user_id", "ugt.user_id")
-    .where("username", name)
-    .groupBy("u.username", "u.avatar")
+        .select("u.username", "u.avatar")
+        .sum("ugt.garbage_type_waste_total as total")
+        .join("users_garbage_types as ugt", "u.user_id", "ugt.user_id")
+        .where("username", name)
+        .groupBy("u.username", "u.avatar")
 }
 
 // const _getUsersGarbageById = (id, previousMonth, curentMonthePlusDay) => {
@@ -35,12 +36,12 @@ const _getFriendData = (name) => {
 const _getUsersGarbageById = (id, previousMonth, curentMonthePlusDay) => {
 
     return db("users_garbage_types as ugt")
-        .select("gt.type as type", "ugt.date as date")
+        .select("gt.type as type", "ugt.date as date", "gt.recycled as recycled", "gt.title as title", "gt.garbage_id")
         .sum("ugt.garbage_type_waste_total as total")
         .join("garbage_type as gt", "ugt.garbage_id", "gt.garbage_id")
         .whereBetween("ugt.date", [previousMonth, curentMonthePlusDay])
         .where({ user_id: id })
-        .groupBy("gt.type", "ugt.date")
+        .groupBy("gt.type", "ugt.date", "gt.recycled", "gt.title", "gt.garbage_id")
         .orderBy("ugt.date")
 };
 

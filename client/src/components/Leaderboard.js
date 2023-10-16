@@ -72,8 +72,8 @@ const Leaderboard = () => {
                 })}
             </List>
             {friendUploaded && (<div>
-                <h3>{friendUser.username}</h3><span className="value" style={{ color: friendUser.total > myUserTotal.total ? 'green' : 'red' }}>{friendUser.total}</span>
-                <h3>{myUserTotal.username}</h3><span className="value" style={{ color: myUserTotal.total > friendUser.total ? 'green' : 'red' }} >{(myUserTotal.total / 1000).toFixed(2)}</span>
+                <h3>{friendUser.username}</h3><span className="value" style={{ color: friendUser.total < myUserTotal.total ? 'green' : 'red' }}>{friendUser.total}</span>
+                <h3>{myUserTotal.username}</h3><span className="value" style={{ color: myUserTotal.total < friendUser.total ? 'green' : 'red' }} >{(myUserTotal.total / 1000).toFixed(2)}</span>
             </div>)}
             <input type="text" placeholder="other user name" onChange={(e) => setFriendUser(e.target.value)} />
             <button type="button" onClick={getFriendData}>Search</button>

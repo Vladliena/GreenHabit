@@ -1,5 +1,5 @@
 const express = require("express");
-const { showAllUserResults, insertUserResult,searchUserResult } = require("../controllers/userresult.controller");
+const { showAllUserResults, insertUserResult, searchUserResult } = require("../controllers/userresult.controller");
 const ur_router = express.Router();
 
 

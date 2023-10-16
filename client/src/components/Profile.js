@@ -98,12 +98,13 @@ const Portfolio = ({ children }) => {
 
     return (
         <>
+            {console.log("data", userInfo)}
             <div className="card-container">
-                {/* <h3>Set your avatar</h3>
-            <form onSubmit={handleSubmitFile}>
-                <input type="file" name="image" value={fileInputState} onChange={handleFileInputChange} />
-                <button type="submit" >Submit</button>
-            </form> */}
+                <h3>Set your avatar</h3>
+                <form onSubmit={handleSubmitFile}>
+                    <input type="file" name="image" value={fileInputState} onChange={handleFileInputChange} />
+                    <button type="submit" >Submit</button>
+                </form>
                 {previewSource && (<img alt="chosen" src={previewSource} style={{ width: "150px" }} className="chosen-image" />)}
                 <Stack direction="row" spacing={2}>
                     <Avatar alt="Remy Sharp" src={userInfo.avatar} sx={{ width: 100, height: 100 }} />
