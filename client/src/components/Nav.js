@@ -8,7 +8,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Person2Icon from '@mui/icons-material/Person2';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import RecyclingIcon from '@mui/icons-material/Recycling';
-import { elastic as Menu } from 'react-burger-menu'
+import { bubble as Menu } from 'react-burger-menu'
 
 
 var styles = {
@@ -66,20 +66,6 @@ const Nav = (props) => {
 
     return (
         <div id="outer-container">
-            {/* <Stack spacing={2} direction={"row"} style={{margin: "auto"}}>
-            <Button component={Link} style={{color:'#111'}} to="/bin">
-                <RecyclingIcon />
-            </Button>
-                <Button component={Link} style={{ color: '#111' }} to="/leaderboard">
-                <EmojiEventsIcon />
-            </Button>
-                <Button component={Link} style={{ color: '#111' }} to="/results">
-                <LeaderboardIcon />
-            </Button>
-                <Button component={Link} style={{ color: '#111' }} to="/profile">
-                <Person2Icon />
-            </Button>
-        </Stack> */}
             <Menu styles={styles} pageWrapId={"page-wrap"} outerContainerId={"outer-container"}>
                 <Button component={Link} style={{ color: 'rgb(184, 183, 173)', display: 'flex', justifyContent: 'space-around' }} to="/bin">
                     <RecyclingIcon /> <span style={{marginLeft:'30px'}}>Bin</span>
