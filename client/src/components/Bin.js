@@ -86,19 +86,21 @@ const Bin = () => {
 
     return (
         <div>
-            <StyledBadge badgeContent={`Plastic Bin ${getTotalWeightByType('Plastic')}`}>
-                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+            <div style={{ textAlign: "center", marginBottom: "80px" }}>
+                <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Plastic <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Plastic')}kg</span></span>} style={{ color: 'white'}}>
+                    <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#FA563C' }} />
             </StyledBadge>
-            <StyledBadge badgeContent={`Glass Bin ${getTotalWeightByType('Glass')}`}>
-                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+                <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Glass <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Glass')}kg</span></span>} style={{ color: 'white' }}>
+                    <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#1C9BDE' }} />
             </StyledBadge>
-            <StyledBadge badgeContent={`Paper Bin ${getTotalWeightByType('Paper')}`}>
-                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+                <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Paper <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Paper')}kg</span></span>} style={{ color: 'white' }}>
+                    <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#DEC21B' }} />
             </StyledBadge>
-            <StyledBadge badgeContent={`Non-recycle Bin ${getTotalWeightByType('Other')}`}>
-                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#0072ea' }} />
+                <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Other <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Other')}kg</span></span>} style={{ color: 'white' }}>
+                    <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#CF882A' }} />
             </StyledBadge>
-            <Button onClick={sendGarbageUserData}>Recycle</Button>
+            <Button onClick={sendGarbageUserData} style={{display:"block", margin: "auto"}}>Recycle</Button>
+            </div>
 
             <ImageList cols={4}>
                 {garbage && garbage.map((item, index) => (
@@ -123,7 +125,7 @@ const Bin = () => {
                                 </Alert>}
                             </Typography>
                         </CardContent>
-                        <CardActions>
+                        <CardActions style={{ flexDirection: "column"}}>
                             <Box sx={{ minWidth: 160 }}>
                                 <FormControl fullWidth>
                                     <InputLabel id="demo-simple-select-label">Select weight</InputLabel>

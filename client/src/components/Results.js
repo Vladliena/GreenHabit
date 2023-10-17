@@ -16,6 +16,8 @@ import {
     BarChart,
     Legend,
     Bar,
+    LineChart,
+    Line
 
 } from "recharts";
 
@@ -83,84 +85,101 @@ const Results = (props) => {
     }
 
     return (
-        <div style={{ display: 'flex' }}>
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <h1 style={{ margin: 'auto' }}>Your Last Results</h1>
-                <AreaChart
-                    width={500}
-                    height={200}
-                    data={LastResults}
-                    margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0
-                    }}
-                >
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="type" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area
-                        type="monotone"
-                        dataKey="yesterday"
-                        stackId="1"
-                        stroke="#8884d8"
-                        fill="#8884d8"
-                    />
-                    <Area
-                        type="monotone"
-                        dataKey="today"
-                        stackId="1"
-                        stroke="#82ca9d"
-                        fill="#82ca9d"
-                    />
-                </AreaChart>
+        <div style={{ padding: '80px 200px', backgroundColor: '#BFAFF2', backgroundImage: `url(${process.env.PUBLIC_URL + 'img/RightGraphic.svg'})`, backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
+            <div style={{ padding: '30px', margin: 'auto', borderRadius: '20px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
 
-
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                    <h1 style={{ margin: 'auto', position: 'relative', right: "50px" }}>Monthly Total Results</h1>
-                    <BarChart
-                        width={500}
-                        height={200}
-                        data={LastResults}
-                        style={{ left: "-80px" }}
-                        margin={{
-                            top: 5,
-                            right: 30,
-                            left: 80,
-                            bottom: 5,
-                        }}
-                        barSize={20}
-                    >
-                        <XAxis
-                            dataKey="type"
-                            scale="point"
-                            padding={{ left: 10, right: 10 }}
-                        />
-                        <YAxis />
-                        <Tooltip />
-                        <Legend />
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <Bar dataKey="totalAll" fill="#8884d8" background={{ fill: "#eee" }} />
-                    </BarChart>
-                </div>
-            </div>
-
-            {nonRecyceResult && (
-                <div>
-                    <div style={{ display: 'flex', flexDirection: 'column' }}>
-                        <h1 style={{ margin: 'auto' }}>Non-Recycle monthly result</h1>
-                        <RadarChart outerRadius={90} width={730} height={250} data={nonRecyceResult}>
-                            <PolarGrid />
-                            <PolarAngleAxis dataKey="title" />
-                            <PolarRadiusAxis angle={30} domain={[0, 150]} />
-                            <Radar name="Non-Recycle" dataKey="totalAll" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                    <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px' }}>
+                        <h3 style={{ margin: 'auto', position: 'relative', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Last two days results</h3>
+                        <AreaChart
+                            width={500}
+                            height={250}
+                            data={LastResults}
+                            margin={{
+                                top: 10,
+                                right: 30,
+                                left: 0,
+                                bottom: 0
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="type" />
+                            <YAxis />
+                            <Tooltip />
+                            <Area
+                                type="monotone"
+                                dataKey="yesterday"
+                                stackId="1"
+                                stroke="#8884d8"
+                                fill="#8884d8"
+                            />
+                            <Area
+                                type="monotone"
+                                dataKey="today"
+                                stackId="1"
+                                stroke="#F8D57E"
+                                fill="#F8D57E"
+                            />
                             <Legend />
-                        </RadarChart>
+                        </AreaChart>
+                    </div>
+
+
+                    <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px' }}>
+                        <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Monthly results</h3>
+                        <BarChart
+                            width={500}
+                            height={250}
+                            data={LastResults}
+                            style={{ position: 'relative', left: '-50px' }}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 80,
+                                bottom: 5,
+                            }}
+                            barSize={20}
+                        >
+                            <XAxis
+                                dataKey="type"
+                                scale="point"
+                                padding={{ left: 10, right: 10 }}
+                            />
+                            <YAxis />
+                            <Tooltip />
+                            <Legend />
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <Bar dataKey="totalAll" fill="#3366FF" background={{ fill: "#eee" }} />
+                        </BarChart>
                     </div>
                 </div>
-            )}
+
+                {nonRecyceResult && (
+                    <div>
+                        <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px' }}>
+                            <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Non-recycle monthly results</h3>
+                            <LineChart style={{ margin: 'auto' }} width={730} height={250} data={nonRecyceResult}
+                                margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="title" />
+                                <YAxis />
+                                <Tooltip />
+                                <Legend />
+                                <Line type="monotone" dataKey="totalAll" stroke="#F8D57E" />
+                            </LineChart>
+
+
+                            {/* <RadarChart style={{margin:'auto'}} outerRadius={90} width={730} height={250} data={nonRecyceResult}>
+                                <PolarGrid />
+                                <PolarAngleAxis dataKey="title" />
+                                <PolarRadiusAxis angle={30} domain={[0, 150]} />
+                                <Radar name="Non-Recycle" dataKey="totalAll" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
+                                <Legend />
+                            </RadarChart> */}
+                        </div>
+                    </div>
+                )}
+            </div>
         </div>
     )
 }

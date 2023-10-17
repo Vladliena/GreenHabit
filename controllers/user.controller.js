@@ -61,7 +61,7 @@ const login = async (req, res) => {
         const row = await _login(req.body.username)
         if (row.length === 0) return res.status(404).json({ msg: "user not found" })
         const match = await bcrypt.compare(req.body.password + '', row[0].password)
-        if (!match) return res.status(404).json({ message: "wrong password" })
+        if (!match) return res.status(404).json({ msg: "wrong password" })
         const userid = row[0].user_id;
         const username = row[0].username;
         const secret = process.env.ACCESS_TOKEN_SECRET;
