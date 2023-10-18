@@ -20,12 +20,14 @@ import {
     Line
 
 } from "recharts";
+import { ThreeCircles, ThreeDots } from 'react-loader-spinner'
 
 
 const Results = (props) => {
     const { token, userInfo } = useContext(AppContext)
     const [LastResults, setLastResults] = useState()
     const [nonRecyceResult, setNonRecycle] = useState()
+    const [loader, setLoader] = useState(true)
 
     useEffect(() => {
         fetchWasteData()
@@ -37,9 +39,10 @@ const Results = (props) => {
         let currentDate = new Date()
         currentDate.setDate(currentDate.getDate() - 1);
         let yesterdayDate = currentDate.toJSON().slice(0, 10)
+        console.log('today =>', todayDate, 'yesterday =>', yesterdayDate)
         try {
             const res = await axios.get(`/api/usergarbage/${userInfo.user_id}`)
-            console.log(res.data)
+            console.log('all data =>', res.data)
             const flattenedData = res.data.reduce((result, item) => {
                 const existingType = result.find((el) => el.type === item.type);
                 if (existingType) {
@@ -64,6 +67,7 @@ const Results = (props) => {
                 today: (item.today / 1000).toFixed(2),
                 totalAll: (item.totalAll / 1000).toFixed(2)
             }))
+            console.log('updated data =>', udpatedData)
             setLastResults(udpatedData)
             const nonRecycle = res.data.filter(el => !el.recycled)
             const nonRecycleSum = nonRecycle.reduce((accumulator, item) => {
@@ -82,15 +86,29 @@ const Results = (props) => {
         } catch (err) {
             console.log('error =>', err)
         }
+        setLoader(false)
     }
 
     return (
-        <div style={{ padding: '80px 200px', backgroundColor: '#BFAFF2', backgroundImage: `url(${process.env.PUBLIC_URL + 'img/RightGraphic.svg'})`, backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
+        <div style={{ padding: '80px 200px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: loader? 'inherit': `url(${process.env.PUBLIC_URL + 'img/RightGraphic.svg'})`, backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
+            {loader ? (<div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding: '200px' }}>
+                <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '20px' }}>Loading...</h1>
+                <ThreeDots
+                    height="100"
+                    width="300"
+                    radius="9"
+                    color="#AA4E78"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    wrapperClassName=""
+                    visible={true}
+                /></div>) : (
+        <div>
             <div style={{ padding: '30px', margin: 'auto', borderRadius: '20px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
 
-                    <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px' }}>
-                        <h3 style={{ margin: 'auto', position: 'relative', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Last two days results</h3>
+                                <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px', paddingTop: '10px' }}>
+                                    <h3 style={{ margin: 'auto', position: 'relative', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Today/Yesterday waste results (kg)</h3>
                         <AreaChart
                             width={500}
                             height={250}
@@ -110,8 +128,8 @@ const Results = (props) => {
                                 type="monotone"
                                 dataKey="yesterday"
                                 stackId="1"
-                                stroke="#8884d8"
-                                fill="#8884d8"
+                                            stroke="#BFAFF2"
+                                            fill="#BFAFF2"
                             />
                             <Area
                                 type="monotone"
@@ -125,8 +143,8 @@ const Results = (props) => {
                     </div>
 
 
-                    <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px' }}>
-                        <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Monthly results</h3>
+                    <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px', paddingTop:'10px' }}>
+                        <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Monthly waste results (kg)</h3>
                         <BarChart
                             width={500}
                             height={250}
@@ -149,15 +167,15 @@ const Results = (props) => {
                             <Tooltip />
                             <Legend />
                             <CartesianGrid strokeDasharray="3 3" />
-                            <Bar dataKey="totalAll" fill="#3366FF" background={{ fill: "#eee" }} />
+                                        <Bar dataKey="totalAll" fill="#AA4E78" background={{ fill: "#eee" }} />
                         </BarChart>
                     </div>
                 </div>
 
                 {nonRecyceResult && (
                     <div>
-                        <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px' }}>
-                            <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Non-recycle monthly results</h3>
+                                    <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px', paddingTop: '10px' }}>
+                                        <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Non-recycle monthly waste results (kg)</h3>
                             <LineChart style={{ margin: 'auto' }} width={730} height={250} data={nonRecyceResult}
                                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
@@ -167,19 +185,12 @@ const Results = (props) => {
                                 <Legend />
                                 <Line type="monotone" dataKey="totalAll" stroke="#F8D57E" />
                             </LineChart>
-
-
-                            {/* <RadarChart style={{margin:'auto'}} outerRadius={90} width={730} height={250} data={nonRecyceResult}>
-                                <PolarGrid />
-                                <PolarAngleAxis dataKey="title" />
-                                <PolarRadiusAxis angle={30} domain={[0, 150]} />
-                                <Radar name="Non-Recycle" dataKey="totalAll" stroke="#8884d8" fill="#8884d8" fillOpacity={0.6} />
-                                <Legend />
-                            </RadarChart> */}
                         </div>
                     </div>
                 )}
             </div>
+        </div>)
+        }
         </div>
     )
 }

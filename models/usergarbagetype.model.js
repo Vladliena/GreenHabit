@@ -34,6 +34,7 @@ const _getFriendData = (name) => {
 // };
 
 const _getUsersGarbageById = (id, previousMonth, curentMonthePlusDay) => {
+    console.log('prev month =>', previousMonth, 'current month =>', curentMonthePlusDay)
 
     return db("users_garbage_types as ugt")
         .select("gt.type as type", "ugt.date as date", "gt.recycled as recycled", "gt.title as title", "gt.garbage_id")

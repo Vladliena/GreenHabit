@@ -1,0 +1,13 @@
+.login-container{
+    position: relative;
+}
+
+
+.login-container::before {
+    content: url('../public/img/whail.svg');
+    position: absolute;
+    z-index: 2;
+    left: -600px;
+    top: -80px;
+    rotate: -30deg;
+}

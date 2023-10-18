@@ -15,6 +15,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import '../Register.css'
 
 function Copyright(props) {
     return (
@@ -74,6 +75,7 @@ export default function SignUp() {
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}
+                    className="register-container"
                 >
                     <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
                         <LockOutlinedIcon />

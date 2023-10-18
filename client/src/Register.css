@@ -1,0 +1,12 @@
+.register-container {
+    position: relative;
+}
+
+.register-container::after{
+    content: url('../public/img/jellyfish.svg');
+        position: absolute;
+        z-index: 2;
+        left: 370px;
+        top: 150px;
+        rotate: 30deg;
+}

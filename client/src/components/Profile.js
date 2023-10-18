@@ -4,8 +4,12 @@ import { Button, Stack } from "@mui/material";
 import { Image } from "cloudinary-react"
 import { useNavigate } from "react-router-dom";
 import { AppContext } from "../App";
-import "../Profile.css"
+import '../Profile.css'
 import Avatar from '@mui/material/Avatar';
+import Popup from 'reactjs-popup';
+import 'reactjs-popup/dist/index.css';
+import { ThreeCircles, ThreeDots } from 'react-loader-spinner'
+import { MuiFileInput } from 'mui-file-input'
 
 const UserContext = createContext();
 
@@ -20,7 +24,7 @@ const Portfolio = ({ children }) => {
     const [previewSource, setPreviewSource] = useState('')
     const navigate = useNavigate();
     // const [uploaded, setUploaded] = useState(null)
-    const { token, setToken, userInfo, setUserInfo, uploaded, setUploaded } = useContext(AppContext);
+    const { token, setToken, userInfo, setUserInfo, uploaded, setUploaded, loader, setLoader } = useContext(AppContext);
 
     const logout = async () => {
         try {
@@ -97,29 +101,70 @@ const Portfolio = ({ children }) => {
 
 
     return (
-        <>
-            {console.log("data", userInfo)}
-            <div className="card-container">
-                <h3>Set your avatar</h3>
-                <form onSubmit={handleSubmitFile}>
-                    <input type="file" name="image" value={fileInputState} onChange={handleFileInputChange} />
-                    <button type="submit" >Submit</button>
-                </form>
-                {previewSource && (<img alt="chosen" src={previewSource} style={{ width: "150px" }} className="chosen-image" />)}
+        <div style={{ padding: '105px 200px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: 'inherit' , backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
+            {loader ? (<div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding: '200px' }}>
+                <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '20px' }}>Loading...</h1>
+                <ThreeDots
+                    height="100"
+                    width="300"
+                    radius="9"
+                    color="#AA4E78"
+                    ariaLabel="three-dots-loading"
+                    wrapperStyle={{}}
+                    wrapperClassName=""
+                    visible={true}
+                /></div>) :
+            (<div className="card-container">
                 <Stack direction="row" spacing={2}>
-                    <Avatar alt="Remy Sharp" src={userInfo.avatar} sx={{ width: 100, height: 100 }} />
+                    <Avatar alt="Remy Sharp" src={userInfo.avatar} sx={{ width: 100, height: 100 }} style={{ marginBottom: '8px', border: '5px dotted #F8D57E' }} />
                 </Stack>
+                <Popup
+                    trigger={<Button className="button" style={{ color: '#AA4E78', fontSize: '13px'}}> Change avatar </Button>}
+                    modal
+                    nested
+                >
+                    {close => (
+                        <div className="modal" style={{ backgroundColor: '#2B2B2B', color: 'rgba(255, 255, 255, 0.6)', }}>
+                            <button className="close" onClick={close}>
+                                &times;
+                            </button>
+                            <div className="header" style={{ color: 'rgba(255, 255, 255, 0.6)', }}> Change Avatar </div>
+                            <div className="content" style={{ width: '100%', margin: 'auto', padding: '16px', borderRadius: '20px', marginBottom: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', alignContent: 'center' }}>
+                                {' '}
+                                <form onSubmit={(e) => { handleSubmitFile(e); close() }} style={{ color: 'rgba(255, 255, 255, 0.6)', margin: 'auto' }}>
+                                    <input type="file" name="image" value={fileInputState} onChange={handleFileInputChange} />
+                                    <Button type="submit">Submit</Button>
+                                </form>
+                                {previewSource && (<Avatar alt="chosen" sx={{ width: 250, height: 250 }} src={previewSource} className="chosen-image" />)}
+                            </div>
+                            <div className="actions">
+                                <Button
+                                    className="button"
+                                    onClick={() => {
+                                        console.log('modal closed ');
+                                        close();
+                                    }}
+                                >
+                                    Close
+                                </Button>
+                            </div>
+                        </div>
+                    )}
+                </Popup>
+                <div style={{marginTop: "25px", display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center'}}>
                 <h1>Welcome Back!</h1>
                 <p>Username: {userInfo ? userInfo.username : "Guest"}</p>
                 <p>First Name: {userInfo ? userInfo.first_name : "N/A"}</p>
                 <p>Last Name: {userInfo ? userInfo.last_name : "N/A"}</p>
                 <p>Email: {userInfo ? userInfo.email : "N/A"}</p>
-                <Button onClick={logout}>Logout</Button>
+                <Button style={{marginTop: '20px'}} onClick={logout}>Logout</Button>
                 <UserContext.Provider value={{ userInfo, setUserInfo }}>
                     {children}
                 </UserContext.Provider>
-            </div>
-        </>
+                </div>
+            </div>)
+            }
+        </div>
     )
 }
 

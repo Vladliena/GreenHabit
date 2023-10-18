@@ -26,6 +26,7 @@ function App() {
     email: '',
     avatar: ''
   })
+  const [loader, setLoader] = useState(true)
 
 
 
@@ -48,10 +49,11 @@ function App() {
     } catch (err) {
       console.log(err)
     }
+    setLoader(false)
   }
 
   return (
-    <AppContext.Provider value={{ token, setToken, userInfo, setUserInfo, uploaded, setUploaded }}>
+    <AppContext.Provider value={{ token, setToken, userInfo, setUserInfo, uploaded, setUploaded, loader, setLoader }}>
       {token && <Nav />}
       <Routes>
         {token ? (

@@ -19,6 +19,7 @@ import AccountCircle from '@mui/icons-material/AccountCircle';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { purple } from '@mui/material/colors'
+import { ThreeCircles, ThreeDots } from 'react-loader-spinner'
 const color = purple[300]
 
 
@@ -33,6 +34,7 @@ const Leaderboard = () => {
     })
     const [friendUploaded, setFriendUploaded] = useState(false)
     const [myUserTotal, setMyUserTotal] = useState(null)
+    const [loader, setLoader] = useState(true)
 
     useEffect(() => {
         getLeaders()
@@ -45,6 +47,7 @@ const Leaderboard = () => {
         } catch (err) {
             console.log(err)
         }
+        setLoader(false)
     }
 
     const getFriendData = async () => {
@@ -67,8 +70,21 @@ const Leaderboard = () => {
 
 
     return (
-        <div style={{ padding: '80px 200px', backgroundColor: '#BFAFF2', display: "flex", flexDirection: "column", backgroundImage: `url(${process.env.PUBLIC_URL + 'img/groupmain.svg'})`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
-            <h1 style={{ margin: 'auto', borderBottom: '5px dotted #F8D57E', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '20px' }}>Leaderboard</h1>
+        <div style={{ padding: '80px 200px', backgroundColor: '#BFAFF2', display: "flex", flexDirection: "column", backgroundImage: loader? 'inherit':`url(${process.env.PUBLIC_URL + 'img/groupmain.svg'})`, backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }}>
+        {loader?
+                (<div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding:'200px' }}>
+                    <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 1)', marginBottom: '20px' }}>Loading...</h1>
+                    <ThreeDots
+                        height="100"
+                        width="300"
+                        radius="9"
+                        color="#AA4E78"
+                        ariaLabel="three-dots-loading"
+                        wrapperStyle={{}}
+                        wrapperClassName=""
+                        visible={true}
+                    /></div>) : (<div style={{display: "flex", flexDirection: "column"}}>
+            <h1 style={{ margin: 'auto', borderBottom: '5px dotted #F8D57E', color: 'rgba(255, 255, 255, 1)', marginBottom: '20px' }}>Leaderboard</h1>
             <List sx={{ width: '100%', maxWidth: 360, backgroundColor: '#2B2B2B', margin: 'auto', padding: '16px', borderRadius: '20px', marginBottom: '30px' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-around', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '10px' }}>
                     <span>Rank</span>
@@ -103,20 +119,24 @@ const Leaderboard = () => {
                 <div style={{ display: 'flex', margin: 'auto', flexDirection: 'column', textAlign: 'center', marginTop: '30px'}}>
                     <h3 style={{ borderBottom: '5px dotted #F8D57E', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300' }}>Want to see your friend results?</h3>
                     <div style={{ margin: 'auto', marginTop: "20px"}}>
-                        {friendUploaded? (<div style={{ display: "flex" }}>
-                            <ListItem style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around', display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
+                        {friendUploaded? (<div style={{ display: "flex", flexDirection: 'column' }}>
+                                    <div style={{ display: "flex" }}>
+                            <ListItem style={{minWidth:'150px' ,backgroundColor: '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around', display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
                                 <h3>{friendUser.username}</h3><span className="value" style={{ color: friendUser.total < myUserTotal.total ? 'green' : 'red' }}>{friendUser.total} kg</span>
+                                            {console.log('friend =>', friendUser.total < myUserTotal.total, 'me =>', myUserTotal.total < friendUser.total)}
                             </ListItem>
-                            <ListItem style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around', display: 'flex', flexDirection: 'column', marginLeft: '5px' }}>
-                                <h3>{myUserTotal.username}</h3><span className="value" style={{ color: myUserTotal.total < friendUser.total ? 'green' : 'red' }} >{(myUserTotal.total / 1000).toFixed(2)} kg</span>
+                                        <ListItem style={{ minWidth: '150px', backgroundColor: '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around', display: 'flex', flexDirection: 'column', marginLeft: '5px' }}>
+                                <h3>You</h3><span className="value" style={{ color: myUserTotal.total < friendUser.total ? 'green' : 'red' }} >{(myUserTotal.total / 1000).toFixed(2)} kg</span>
                             </ListItem>
-                            <Button color="secondary" type="button" onClick={() => setFriendUploaded(false)} style={{ marginLeft: '5px' }}>Search Again</Button>
+                            </div>
+                            <Button color="secondary" type="button" onClick={() => setFriendUploaded(false)} style={{ marginLeft: '5px'}}>Search Again</Button>
                         </div>) : (<div style={{ display: 'flex', alignItems: 'center', marginBottom: '8px' }}><TextField sx={{ input: { color: 'rgba(255, 255, 255, 0.6)' } }} label="Find friend" color={"secondary"} focused onChange={(e) => setFriendUser(e.target.value)} style={{ marginRight: '5px' }} />
                             <Button color="secondary" type="button" onClick={getFriendData} style={{ marginLeft: '5px' }}>Search</Button></div>)}
                     </div>
                 </div>
             </List>
-        </div>
+        </div>)
+            }</div>
     )
 }
 
