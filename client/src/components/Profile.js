@@ -23,7 +23,7 @@ const Portfolio = ({ children }) => {
     const [previewSource, setPreviewSource] = useState('')
     const navigate = useNavigate();
     // const [uploaded, setUploaded] = useState(null)
-    const { token, setToken, userInfo, setUserInfo, uploaded, setUploaded, loader, setLoader } = useContext(AppContext);
+    const { token, setToken, userInfo, setUserInfo, uploaded, setUploaded} = useContext(AppContext);
 
     const logout = async () => {
         try {
@@ -41,22 +41,7 @@ const Portfolio = ({ children }) => {
             navigate("/login");
         }
     };
-    // const [imageIds, setImageIds] = useState();
-
-    // const loadimages = async () => {
-    //     try {
-    //         const res = await fetch('/api/images')
-    //         const data = await res.json()
-    //         console.log(data)
-    //         setImageIds(data)
-    //     } catch (error) {
-    //         console.error(error)
-    //     }
-    // }
-
-    // useEffect(() => {
-    //     loadimages()
-    // }, [])
+    
 
     useEffect(() => {
         setPreviewSource(null)
@@ -101,19 +86,7 @@ const Portfolio = ({ children }) => {
 
     return (
         <div style={{ padding: '105px 200px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: 'inherit', backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
-            {loader ? (<div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding: '200px' }}>
-                <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '20px' }}>Loading...</h1>
-                <ThreeDots
-                    height="100"
-                    width="300"
-                    radius="9"
-                    color="#AA4E78"
-                    ariaLabel="three-dots-loading"
-                    wrapperStyle={{}}
-                    wrapperClassName=""
-                    visible={true}
-                /></div>) :
-                (<div className="card-container">
+            <div className="card-container">
                     <Stack direction="row" spacing={2}>
                         <Avatar alt="Remy Sharp" src={userInfo.avatar} sx={{ width: 100, height: 100 }} style={{ marginBottom: '8px', border: '5px dotted #F8D57E' }} />
                     </Stack>
@@ -162,8 +135,7 @@ const Portfolio = ({ children }) => {
                             {children}
                         </UserContext.Provider>
                     </div>
-                </div>)
-            }
+                </div>
         </div>
     )
 }
