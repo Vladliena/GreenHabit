@@ -65,6 +65,7 @@ export default function SignUp() {
                 navigate("/login");
             }
         } catch (err) {
+            setLoader(false)
             setMessage(err.response.data.msg);
         }
     };

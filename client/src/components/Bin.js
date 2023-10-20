@@ -134,9 +134,6 @@ const Bin = () => {
                             >
                                 {close => (
                                     <div className="modal" style={{ backgroundColor: '#2B2B2B', color: 'rgba(255, 255, 255, 0.6)', }}>
-                                        {/* <button className="close" onClick={close}>
-                                            &times;
-                                        </button> */}
                                         <div className="header" style={{ color: 'rgba(255, 255, 255, 0.6)', }}> Your waste was recycled!</div>
                                         <div style={{ width: '400px', margin: 'auto'}}>
                                             <img style={{ width: '100%', display: 'block' }} alt="img" src="https://res.cloudinary.com/dkmsj7cut/image/upload/v1697748677/waste_type/christopher-vega-nnlRR2NF2ko-unsplash_1_1_t5wyjr.png"></img>
@@ -146,6 +143,7 @@ const Bin = () => {
                                                 style={{ color: '#AA4E78' }}
                                                 className="button"
                                                 onClick={() => {
+                                                    setGarbageBins([]);
                                                     sendGarbageUserData();
                                                     close();
                                                 }}

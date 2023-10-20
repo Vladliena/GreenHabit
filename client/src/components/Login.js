@@ -60,6 +60,7 @@ export const SignIn = (props) => {
                 navigate("/profile");
             }
         } catch (err) {
+            setLoader(false)
             setMessage(err.response.data.msg);
         }
     };
