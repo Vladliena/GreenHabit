@@ -57,10 +57,22 @@ export default function SignUp() {
             });
             if (res.status === 200) {
                 setMessage("");
+                await sendEmail(email, username);
                 navigate("/login");
             }
         } catch (err) {
             setMessage(err.response.data.msg);
+        }
+    };
+
+    const sendEmail = async (toEmail, toUsername) => {
+        try {
+            const res = await axios.post("/api/send-email", { to: toEmail, username: toUsername });
+            if (res.status === 200) {
+                console.log("Email sent successfully");
+            }
+        } catch (err) {
+            console.error("Email sending failed: ", err);
         }
     };
 

@@ -8,8 +8,7 @@ import '../Profile.css'
 import Avatar from '@mui/material/Avatar';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
-import { ThreeCircles, ThreeDots } from 'react-loader-spinner'
-import { MuiFileInput } from 'mui-file-input'
+import {ThreeDots } from 'react-loader-spinner'
 
 const UserContext = createContext();
 

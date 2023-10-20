@@ -37,7 +37,7 @@ export const SignIn = (props) => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
-    const { setToken } = useContext(AppContext);
+    const { setToken, userInfo } = useContext(AppContext);
 
     const navigate = useNavigate()
 
@@ -53,12 +53,26 @@ export const SignIn = (props) => {
                 setMessage("");
                 console.log(res.data);
                 setToken(res.data);
+
+                // await sendEmail(userInfo.email, userInfo.username);
+
                 navigate("/profile");
             }
         } catch (err) {
             setMessage(err.response.data.msg);
         }
     };
+
+    // const sendEmail = async (toEmail, toUsername) => {
+    //     try {
+    //         const res = await axios.post("/api/send-email", { to: toEmail, username: toUsername });
+    //         if (res.status === 200) {
+    //             console.log("Email sent successfully");
+    //         }
+    //     } catch (err) {
+    //         console.error("Email sending failed: ", err);
+    //     }
+    // };
 
     return (
         <ThemeProvider theme={defaultTheme}>
