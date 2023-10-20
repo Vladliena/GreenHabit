@@ -8,11 +8,6 @@ import {
     YAxis,
     CartesianGrid,
     Tooltip,
-    Radar,
-    RadarChart,
-    PolarGrid,
-    PolarAngleAxis,
-    PolarRadiusAxis,
     BarChart,
     Legend,
     Bar,
@@ -46,17 +41,17 @@ const Results = (props) => {
             const flattenedData = res.data.reduce((result, item) => {
                 const existingType = result.find((el) => el.type === item.type);
                 if (existingType) {
-                    existingType.totalAll += parseFloat(item.total)
                     if (item.date.includes(yesterdayDate)) {
-                        existingType.yesterday = parseFloat(existingType.yesterday) + parseFloat(item.total);
+                        existingType.yesterday += parseFloat(item.total);
                     } else if (item.date.includes(todayDate)) {
-                        existingType.today = parseFloat(existingType.today) + parseFloat(item.total);
+                        existingType.today += parseFloat(item.total);
                     }
+                    existingType.totalAll += parseFloat(item.total)
                 } else {
                     if (item.date.includes(yesterdayDate)) {
-                        result.push({ type: item.type, yesterday: parseFloat(item.total), today: 0, totalAll: 0, recycled: item.recycled });
-                    } else {
-                        result.push({ type: item.type, yesterday: 0, today: parseFloat(item.total), totalAll: 0, recycled: item.recycled });
+                        result.push({ type: item.type, yesterday: parseFloat(item.total), today: 0, totalAll: parseFloat(item.total), recycled: item.recycled });
+                    } else{
+                        result.push({ type: item.type, yesterday: 0, today: parseFloat(item.total), totalAll: parseFloat(item.total), recycled: item.recycled });
                     }
                 }
                 return result;
@@ -64,8 +59,8 @@ const Results = (props) => {
             const udpatedData = flattenedData.map(item => ({
                 ...item,
                 yesterday: (item.yesterday / 1000).toFixed(2),
+                totalAll: (item.totalAll / 1000).toFixed(2),
                 today: (item.today / 1000).toFixed(2),
-                totalAll: (item.totalAll / 1000).toFixed(2)
             }))
             console.log('updated data =>', udpatedData)
             setLastResults(udpatedData)
@@ -79,7 +74,7 @@ const Results = (props) => {
                 return accumulator;
             }, {});
 
-            const nonRecycleArray = Object.entries(nonRecycleSum).map(([title, totalAll]) => ({ title, totalAll }));
+            const nonRecycleArray = Object.entries(nonRecycleSum).map(([title, totalAll]) => ({ title, totalAll: (totalAll / 1000).toFixed(2) }));
 
             setNonRecycle(nonRecycleArray);
             console.log('finished')

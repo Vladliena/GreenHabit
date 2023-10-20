@@ -6,21 +6,14 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
 import Avatar from '@mui/material/Avatar';
-import ImageIcon from '@mui/icons-material/Image';
 import '../Leaderboard.css'
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Box from '@mui/material/Box';
-import Input from '@mui/material/Input';
-import InputLabel from '@mui/material/InputLabel';
-import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import AccountCircle from '@mui/icons-material/AccountCircle';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { purple } from '@mui/material/colors'
-import { ThreeCircles, ThreeDots } from 'react-loader-spinner'
-const color = purple[300]
+import {ThreeDots } from 'react-loader-spinner'
 
 
 
@@ -57,7 +50,7 @@ const Leaderboard = () => {
             setFriendUser({
                 username: data[0].username,
                 avatar: data[0].avatar,
-                total: (data[0].total / 1000).toFixed(2)
+                total: data[0].total
             })
             let myTotal = leaders.find((user) => user.username === userInfo.username)
             setMyUserTotal(myTotal)
@@ -91,7 +84,7 @@ const Leaderboard = () => {
                     <span>Username</span>
                     <span>Result</span>
                 </div>
-                {leaders && leaders.map(item => {
+                {leaders && leaders.slice(0,5).map(item => {
                     return (
                         <ListItem style={{ backgroundColor: item.username === userInfo.username ? '#C7F064' : '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around' }}>
                             {(() => {
@@ -120,13 +113,13 @@ const Leaderboard = () => {
                     <h3 style={{ borderBottom: '5px dotted #F8D57E', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300' }}>Want to see your friend results?</h3>
                     <div style={{ margin: 'auto', marginTop: "20px"}}>
                         {friendUploaded? (<div style={{ display: "flex", flexDirection: 'column' }}>
+                        {console.log( typeof  myUserTotal.total)}
                                     <div style={{ display: "flex" }}>
                             <ListItem style={{minWidth:'150px' ,backgroundColor: '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around', display: 'flex', flexDirection: 'column', marginRight: '5px' }}>
-                                <h3>{friendUser.username}</h3><span className="value" style={{ color: friendUser.total < myUserTotal.total ? 'green' : 'red' }}>{friendUser.total} kg</span>
-                                            {console.log('friend =>', friendUser.total < myUserTotal.total, 'me =>', myUserTotal.total < friendUser.total)}
+                                <h3>{friendUser.username}</h3><span className="value" style={{ color: parseFloat(friendUser.total) < parseFloat(myUserTotal.total) ? 'green' : 'red' }}>{(friendUser.total / 1000).toFixed(2)} kg</span>
                             </ListItem>
                                         <ListItem style={{ minWidth: '150px', backgroundColor: '#FFFFFF', borderRadius: '20px', marginBottom: '8px', display: 'flex', justifyContent: 'space-around', display: 'flex', flexDirection: 'column', marginLeft: '5px' }}>
-                                <h3>You</h3><span className="value" style={{ color: myUserTotal.total < friendUser.total ? 'green' : 'red' }} >{(myUserTotal.total / 1000).toFixed(2)} kg</span>
+                                            <h3>You</h3><span className="value" style={{ color: parseFloat(myUserTotal.total) < parseFloat(friendUser.total) ? 'green' : 'red' }} >{(myUserTotal.total / 1000).toFixed(2)} kg</span>
                             </ListItem>
                             </div>
                             <Button color="secondary" type="button" onClick={() => setFriendUploaded(false)} style={{ marginLeft: '5px'}}>Search Again</Button>

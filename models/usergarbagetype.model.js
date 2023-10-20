@@ -12,7 +12,6 @@ const _getUsersGarbageTypes = () => {
         .join("users as u", "ugt.user_id", "u.user_id")
         .groupBy("ugt.user_id", "u.avatar", "u.username")
         .orderBy("total", "asc")
-        .limit(5);
 };
 
 const _getFriendData = (name) => {
