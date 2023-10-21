@@ -33,6 +33,7 @@ const Portfolio = ({ children }) => {
                 },
             });
             if (res.status === 200) {
+                localStorage.removeItem("token");
                 setToken(null);
                 navigate("/login");
             }

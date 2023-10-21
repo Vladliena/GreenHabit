@@ -28,11 +28,10 @@ function App() {
   })
   
 
-
-
   useEffect(() => {
     fetchUserInfo()
   }, [token,uploaded])
+
 
   const fetchUserInfo = async () => {
     try {
@@ -50,12 +49,13 @@ function App() {
       console.log(err)
     }
   }
+  
 
   return (
     <AppContext.Provider value={{ token, setToken, userInfo, setUserInfo, uploaded, setUploaded}}>
-      {token && <Nav />}
+      {token && <Auth><Nav /></Auth>}
       <Routes>
-        {token ? (
+        {token? (
           <>
             <Route path="/profile" element={<Auth><Profile title="Profile" /></Auth>} />
             <Route path="/bin" element={<Auth><Bin title="Bin" /></Auth>} />

@@ -24,6 +24,7 @@ export const Auth = (props) => {
                 navigate("/login");
             }
         };
+        localStorage.setItem("token", token.token);
         verify();
     }, []);
 

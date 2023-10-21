@@ -54,7 +54,6 @@ export const SignIn = (props) => {
             });
             if (res.status === 200) {
                 setMessage("");
-                console.log(res.data);
                 setToken(res.data);
                 setLoader(false)
                 navigate("/profile");
