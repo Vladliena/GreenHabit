@@ -1,6 +1,6 @@
 import axios from "axios";
 import { AppContext } from "../App";
-import { useEffect, useState, useContext, createContext } from "react";
+import { useEffect, useState, useContext} from "react";
 import {
     AreaChart,
     Area,
@@ -15,11 +15,11 @@ import {
     Line
 
 } from "recharts";
-import { ThreeCircles, ThreeDots } from 'react-loader-spinner'
+import {ThreeDots} from 'react-loader-spinner'
 
 
 const Results = (props) => {
-    const { token, userInfo } = useContext(AppContext)
+    const { userInfo } = useContext(AppContext)
     const [LastResults, setLastResults] = useState()
     const [nonRecyceResult, setNonRecycle] = useState()
     const [loader, setLoader] = useState(true)
@@ -28,16 +28,19 @@ const Results = (props) => {
         fetchWasteData()
     }, [])
 
+// Fetch waste results and set as a state according to type of waste and date. Sum weight.
+
 
     const fetchWasteData = async () => {
+
+
         const todayDate = new Date().toJSON().slice(0, 10)
         let currentDate = new Date()
         currentDate.setDate(currentDate.getDate() - 1);
         let yesterdayDate = currentDate.toJSON().slice(0, 10)
-        console.log('today =>', todayDate, 'yesterday =>', yesterdayDate)
+
         try {
             const res = await axios.get(`/api/usergarbage/${userInfo.user_id}`)
-            console.log('all data =>', res.data)
             const flattenedData = res.data.reduce((result, item) => {
                 const existingType = result.find((el) => el.type === item.type);
                 if (existingType) {
@@ -62,7 +65,6 @@ const Results = (props) => {
                 totalAll: (item.totalAll / 1000).toFixed(2),
                 today: (item.today / 1000).toFixed(2),
             }))
-            console.log('updated data =>', udpatedData)
             setLastResults(udpatedData)
             const nonRecycle = res.data.filter(el => !el.recycled)
             const nonRecycleSum = nonRecycle.reduce((accumulator, item) => {
@@ -75,9 +77,7 @@ const Results = (props) => {
             }, {});
 
             const nonRecycleArray = Object.entries(nonRecycleSum).map(([title, totalAll]) => ({ title, totalAll: (totalAll / 1000).toFixed(2) }));
-
             setNonRecycle(nonRecycleArray);
-            console.log('finished')
         } catch (err) {
             console.log('error =>', err)
         }
@@ -85,7 +85,7 @@ const Results = (props) => {
     }
 
     return (
-        <div style={{ padding: '80px 200px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: loader ? 'inherit' : `url(${process.env.PUBLIC_URL + 'img/RightGraphic.svg'})`, backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
+        <div style={{ padding: '80px 200px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: loader ? 'inherit' : `url(${process.env.PUBLIC_URL + 'img/RightGraphic.svg'})`, backgroundPosition: 'top right', backgroundRepeat: 'no-repeat' }}>
             {loader ? (<div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding: '200px' }}>
                 <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', marginBottom: '20px' }}>Loading...</h1>
                 <ThreeDots
@@ -97,9 +97,10 @@ const Results = (props) => {
                     wrapperStyle={{}}
                     wrapperClassName=""
                     visible={true}
-                /></div>) : (
+                /></div>) : (<>
+                    <h1 style={{margin: 'auto', borderBottom: '5px dotted #F8D57E', color: 'rgba(255, 255, 255, 1)', marginBottom: '30px' }}>Dashboard</h1>
                 <div>
-                    <div style={{ padding: '30px', margin: 'auto', borderRadius: '20px' }}>
+                    <div style={{margin: 'auto', borderRadius: '20px' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '20px' }}>
 
                             <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px', paddingTop: '10px' }}>
@@ -170,7 +171,7 @@ const Results = (props) => {
                         {nonRecyceResult && (
                             <div>
                                 <div style={{ display: 'flex', flexDirection: 'column', backgroundColor: '#2B2B2B', borderRadius: '20px', paddingTop: '10px' }}>
-                                    <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Non-recycle monthly waste results (kg)</h3>
+                                        <h3 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 0.6)', fontWeight: '300', borderBottom: '5px dotted #F8D57E', marginBottom: '20px' }}>Non-Recyclable monthly waste results (kg)</h3>
                                     <LineChart style={{ margin: 'auto' }} width={730} height={250} data={nonRecyceResult}
                                         margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" />
@@ -184,7 +185,7 @@ const Results = (props) => {
                             </div>
                         )}
                     </div>
-                </div>)
+                    </div></>)
             }
         </div>
     )

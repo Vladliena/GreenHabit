@@ -1,13 +1,10 @@
-import { AppContext } from "../App";
-import { useContext, useState, useEffect } from "react";
+import {useState} from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -30,8 +27,6 @@ function Copyright(props) {
         </Typography>
     );
 }
-
-// TODO remove, this demo shouldn't need to reset the theme.
 
 const defaultTheme = createTheme();
 
@@ -70,6 +65,8 @@ export default function SignUp() {
         }
     };
 
+    // Sending email after registration
+
     const sendEmail = async (toEmail, toUsername) => {
         try {
             const res = await axios.post("/api/send-email", { to: toEmail, username: toUsername });
@@ -87,7 +84,7 @@ export default function SignUp() {
                 loader ?
                     (<div style={{ padding: '80px 200px', backgroundColor: '#BFAFF2', display: "flex", flexDirection: "column", backgroundRepeat: 'no-repeat', backgroundPosition: 'center' }} >
                         <div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding: '200px' }} >
-                            <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 1)', marginBottom: '20px' }}>Registering a new Eco-friend 😊</h1>
+                            <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 1)', marginBottom: '20px' }}>Registering a new Eco-user 😊</h1>
                             <ThreeDots
                                 height="100"
                                 width="300"

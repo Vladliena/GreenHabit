@@ -1,17 +1,15 @@
 import { Link } from "react-router-dom";
-import { Button, Stack, colors } from "@mui/material";
-import { useEffect, useState, useContext } from "react";
+import { Button, Stack} from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import { AppContext } from "../App";
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import Person2Icon from '@mui/icons-material/Person2';
 import LeaderboardIcon from '@mui/icons-material/Leaderboard';
 import RecyclingIcon from '@mui/icons-material/Recycling';
 import { bubble as Menu } from 'react-burger-menu'
+import '../Nav.css'
 
 
-var styles = {
+const styles = {
     bmBurgerButton: {
         position: 'fixed',
         width: '36px',
@@ -61,7 +59,6 @@ var styles = {
 }
 
 const Nav = (props) => {
-    const { token, setToken } = useContext(AppContext);
     const navigate = useNavigate();
 
     return (

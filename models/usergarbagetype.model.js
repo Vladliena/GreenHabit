@@ -23,17 +23,7 @@ const _getFriendData = (name) => {
         .groupBy("u.username", "u.avatar")
 }
 
-// const _getUsersGarbageById = (id, previousMonth, curentMonthePlusDay) => {
-//     return db("users_garbage_types as ugt")
-//         .select("gt.type as type", "ugt.date as date", "ugt.garbage_type_waste_total as total")
-//         .join("garbage_type as gt", "ugt.garbage_id", "gt.garbage_id")
-//         .whereBetween("ugt.date", [previousMonth, curentMonthePlusDay])
-//         .where({ user_id: id })
-//         .orderBy("ugt.date")
-// };
-
 const _getUsersGarbageById = (id, previousMonth, curentMonthePlusDay) => {
-    console.log('prev month =>', previousMonth, 'current month =>', curentMonthePlusDay)
 
     return db("users_garbage_types as ugt")
         .select("gt.type as type", "ugt.date as date", "gt.recycled as recycled", "gt.title as title", "gt.garbage_id")

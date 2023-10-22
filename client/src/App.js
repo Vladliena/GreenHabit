@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import './App.css';
 import { useState, createContext, useEffect } from 'react';
 import { Routes, Route, Navigate } from "react-router-dom";
@@ -11,6 +10,57 @@ import { Auth } from './auth/Auth';
 import Results from './components/Results';
 import axios from "axios";
 import Leaderboard from './components/Leaderboard';
+
+
+let styles = {
+  bmBurgerButton: {
+    position: 'fixed',
+    width: '36px',
+    height: '30px',
+    left: '36px',
+    top: '36px'
+  },
+  bmBurgerBars: {
+    background: '#373a47'
+  },
+  bmBurgerBarsHover: {
+    background: '#a90000'
+  },
+  bmCrossButton: {
+    height: '24px',
+    width: '24px'
+  },
+  bmCross: {
+    background: '#bdc3c7'
+  },
+  bmMenuWrap: {
+    position: 'fixed',
+    height: '100%'
+  },
+  bmMenu: {
+    background: '#373a47',
+    padding: '2.5em 1.5em 0 0.5em',
+    fontSize: '1.15em',
+    whiteSpace: 'inherit'
+  },
+  bmMorphShape: {
+    fill: '#373a47'
+  },
+  bmItemList: {
+    color: '#b8b7ad',
+    padding: '0.8em',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start'
+  },
+  bmItem: {
+    display: 'inline-block'
+  },
+  bmOverlay: {
+    background: 'rgba(0, 0, 0, 0.3)'
+  }
+}
+
 
 
 export const AppContext = createContext(null);

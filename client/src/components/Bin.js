@@ -20,7 +20,7 @@ import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
 import Stack from '@mui/material/Stack';
 import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import {ThreeDots} from 'react-loader-spinner'
+import { ThreeDots } from 'react-loader-spinner'
 import FactoryIcon from '@mui/icons-material/Factory';
 import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
@@ -38,13 +38,15 @@ const Bin = () => {
     const [selectOption, setSelectedOption] = useState()
     const { userInfo } = useContext(AppContext);
     const [garbageBins, setGarbageBins] = useState([])
-    const [dataSent, setDataSent] = useState(false)
     const [loader, setLoader] = useState(true)
 
 
     useEffect(() => {
-            allProducts()
+        allProducts()
     }, [])
+
+
+    // Fetch att types of waste and its weight
 
     const allProducts = async () => {
         try {
@@ -57,6 +59,8 @@ const Bin = () => {
         }
         setLoader(false)
     };
+
+    // Setting States (preparing for send to database) with type and sum of weights for each garbage
 
     const handleSubmit = (waste_type, garbage_id) => {
         const typeWeight = parseFloat(selectOption)
@@ -77,6 +81,9 @@ const Bin = () => {
         }
     }
 
+
+    // Sending user waste to database
+
     const sendGarbageUserData = async () => {
         try {
             await axios.post('/api/usergarbage/dump', garbageBins)
@@ -85,6 +92,8 @@ const Bin = () => {
         }
     }
 
+    // Filtering types og garbages to show sum of weight for each specific icon
+
     const getTotalWeightByType = (typename) => {
         return garbageBins
             .filter((bin) => bin.type === typename)
@@ -92,7 +101,7 @@ const Bin = () => {
     }
 
     return (
-        <div style={{ padding: '105px 100px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: 'inherit', backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
+        <div style={{ padding: '80px 100px', display: "flex", flexDirection: "column", backgroundColor: '#BFAFF2', backgroundImage: 'inherit', backgroundPosition: 'right', backgroundRepeat: 'no-repeat' }}>
             {loader ?
                 (<div style={{ margin: 'auto', display: "flex", flexDirection: "column", padding: '200px' }}>
                     <h1 style={{ margin: 'auto', color: 'rgba(255, 255, 255, 1)', marginBottom: '20px' }}>Loading...</h1>
@@ -106,55 +115,54 @@ const Bin = () => {
                         wrapperClassName=""
                         visible={true}
                     /></div>) :
-
-                (<div style={{ backgroundColor: '#2B2B2B', padding: '16px', borderRadius: '20px', display: 'flex', flexDirection: 'column' }}>
+                (<>
+                    <h1 style={{ margin: 'auto', borderBottom: '5px dotted #F8D57E', color: 'rgba(255, 255, 255, 1)', marginBottom: '30px' }}>Recycle Bin</h1>
+                    <div style={{ backgroundColor: '#2B2B2B', padding: '16px', borderRadius: '20px', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ textAlign: "center", marginBottom: "80px", borderBottom: '5px dotted #F8D57E', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-                        <div style={{display: 'flex', alignSelf: 'left'}}>
-                        <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Plastic <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Plastic')}kg</span></span>} style={{ color: 'white' }}>
-                            <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#FA563C' }} />
-                        </StyledBadge>
-                        <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Glass <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Glass')}kg</span></span>} style={{ color: 'white' }}>
-                            <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#1C9BDE' }} />
-                        </StyledBadge>
-                        <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Paper <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Paper')}kg</span></span>} style={{ color: 'white' }}>
-                            <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#DEC21B' }} />
-                        </StyledBadge>
+                        <div style={{ display: 'flex', alignSelf: 'left' }}>
+                            <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Plastic <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Plastic')}kg</span></span>} style={{ color: 'white' }}>
+                                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#F17300' }} />
+                            </StyledBadge>
+                            <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Glass <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Glass')}kg</span></span>} style={{ color: 'white' }}>
+                                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#004F6C' }} />
+                            </StyledBadge>
+                            <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5' }}>Paper <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Paper')}kg</span></span>} style={{ color: 'white' }}>
+                                <DeleteSharpIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#E59689' }} />
+                            </StyledBadge>
                         </div>
-                        <div style={{marginLeft: '50px'}}>
-                        <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5', position: 'absolute', left: '-28px', top: '-10px' }}>Other <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Other')}kg</span></span>} style={{ color: 'white' }}>
-                            <LocalShippingIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#CF882A', position: 'relative' }} />
-                        </StyledBadge>
+                        <div style={{ marginLeft: '50px' }}>
+                            <StyledBadge badgeContent={<span style={{ fontSize: '12px', lineHeight: '1.5', position: 'absolute', left: '-28px', top: '-10px' }}>Other <span style={{ color: 'rgba(255, 255, 255, 0.6)' }}>{getTotalWeightByType('Other')}kg</span></span>} style={{ color: 'white' }}>
+                                <LocalShippingIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: '#60935D', position: 'relative' }} />
+                            </StyledBadge>
                         </div>
                         <div>
-                        <FactoryIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: 'lightgrey' }} />
+                            <FactoryIcon aria-label="cart" sx={{ width: 130, height: 130 }} style={{ fill: 'lightgrey' }} />
                             <Popup
-                                trigger={<Button style={{ display: "block", margin: "auto", color: 'lightgrey'}}>Recycle</Button>}
+                                trigger={<Button style={{ display: "block", margin: "auto", color: 'lightgrey' }}>Recycle</Button>}
                                 modal
                                 nested
                             >
                                 {close => (
                                     <div className="modal" style={{ backgroundColor: '#2B2B2B', color: 'rgba(255, 255, 255, 0.6)', }}>
                                         <div className="header" style={{ color: 'rgba(255, 255, 255, 0.6)', }}> Your waste was recycled!</div>
-                                        <div style={{ width: '400px', margin: 'auto'}}>
+                                        <div style={{ width: '400px', margin: 'auto' }}>
                                             <img style={{ width: '100%', display: 'block' }} alt="img" src="https://res.cloudinary.com/dkmsj7cut/image/upload/v1697748677/waste_type/christopher-vega-nnlRR2NF2ko-unsplash_1_1_t5wyjr.png"></img>
                                         </div>
                                         <div className="actions">
                                             <Button
-                                                style={{ color: '#AA4E78' }}
+                                                style={{ color: '#004F6C' }}
                                                 className="button"
                                                 onClick={() => {
                                                     setGarbageBins([]);
                                                     sendGarbageUserData();
                                                     close();
-                                                }}
-                                            >
+                                                }}>
                                                 Close
                                             </Button>
                                         </div>
                                     </div>
                                 )}
                             </Popup>
-                        {/* <Button onClick={sendGarbageUserData} style={{ display: "block", margin: "auto" }}>Recycle</Button> */}
                         </div>
                     </div>
                     <ImageList cols={4} gap={10}>
@@ -190,21 +198,19 @@ const Bin = () => {
                                                 value={selectOption}
                                                 label="Weight"
                                                 onChange={(e) => setSelectedOption(e.target.value)}
-                                                style={{ fontWeight: '300', border: '1px white solid' }}
-                                            >
+                                                style={{ fontWeight: '300', border: '1px white solid' }}>
                                                 <MenuItem value={item.s_size}>{item.s_size} {item.base_unit}</MenuItem>
                                                 <MenuItem value={item.m_size}>{item.m_size} {item.base_unit}</MenuItem>
                                                 <MenuItem value={item.l_size}>{item.l_size} {item.base_unit}</MenuItem>
                                             </Select>
-                                            <Button style={{ color: '#AA4E78' }} type="button" onClick={() => handleSubmit(item.type, item.garbage_id)}>Add to bin</Button>
+                                            <Button style={{ color: '#004F6C' }} type="button" onClick={() => handleSubmit(item.type, item.garbage_id)}>Add to bin</Button>
                                         </FormControl>
                                     </Box>
                                 </CardActions>
                             </Card>
-
                         ))}
                     </ImageList>
-                </div>)
+                    </div></>)
             }
         </div>
     )

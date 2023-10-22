@@ -38,7 +38,7 @@ export const SignIn = (props) => {
     const [password, setPassword] = useState("");
     const [message, setMessage] = useState("");
 
-    const { setToken, userInfo } = useContext(AppContext);
+    const {setToken} = useContext(AppContext);
     const [loader, setLoader] = useState(false)
 
     const navigate = useNavigate()
