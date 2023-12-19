@@ -1,11 +1,5 @@
 # GreenHabit App IN PROCESS
 
-## Links
-
-- [Loom Video](https://www.loom.com/share/3de357e85f8b42f5927db3d6ba78db9b?sid=9b92bd84-f45a-4783-a359-d91f5d4d2c6d)
-- [Deployed Profile](https://portfolio-gvn1.onrender.com/)
-- [Deployed Project](https://greenhabbit.onrender.com/login)
-
 ## Tools
 
 - React
